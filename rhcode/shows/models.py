@@ -4,8 +4,18 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
 class Show(models.Model):
-    show_date = models.DateField(default=date.today)
-    venue = models.CharField(max_length=100, default="")
+    date = models.DateField(default=date.today)
+    venue = models.CharField(max_length=40, default="")
+    city = models.CharField(max_length=40, default="")
+    state = models.CharField(max_length=40, default="")
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, blank=True, null=True)
+    tour = models.ForeignKey('Tour', on_delete=models.SET_NULL, blank=True, null=True)
+    sfm_setlist_id = models.CharField(max_length=15, default="00000000")
+    notes = models.CharField(max_length=250, default="")
+        
+    def __str__(self):
+        retstr = str(self.date) + ' - ' + str(self.venue) + ', ' + str(self.city) + ', ' + str(self.country)
+        return retstr
 
 #Table of all performances of all songs, to link from songs to shows and add performance info per song
 class Performance(models.Model):
@@ -19,23 +29,53 @@ class Performance(models.Model):
             MinValueValidator(0)
         ]
     )
+    notes = models.CharField(max_length=250, default="")
+
+class Tour(models.Model):
+    name = models.CharField(max_length=30)
+    def __str__(self):
+        return self.name
 
 class Song(models.Model):
-    song_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     album = models.ForeignKey('Album', on_delete=models.SET_NULL, null=True)
     def __str__(self):
-        return self.song_name
+        return self.name
+
+class Track(models.Model):
+    name = models.CharField(max_length=100)
+    track_number = models.IntegerField(
+        default=1,
+        validators=[
+            MinValueValidator(1)
+        ]
+    )
+    song = models.ForeignKey('Song', on_delete=models.SET_NULL, null=True)
 
 class Album(models.Model):
-    album_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     def __str__(self):
-        return self.album_name
+        return self.name
+
+class Release(models.Model):
+    name = models.CharField(max_length=40)
+    date = models.DateField(default=date.today)
+    parent_album = models.ForeignKey('Album', on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return self.name
 
 class Recording(models.Model):
-    recording_name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     recorded_show = models.ForeignKey('Show', on_delete=models.SET_NULL, null=True)
-    recording_type = models.ForeignKey('RecordingTypes', on_delete=models.SET_NULL, null=True)
+    recording_type = models.ForeignKey('RecordingType', on_delete=models.SET_NULL, null=True)
 
-class RecordingTypes(models.Model):
-    type_name = models.CharField(max_length=20)
-    recordings = models.ForeignKey('Recording', on_delete=models.SET_NULL, null=True)
+class RecordingType(models.Model):
+    name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+
+class Country(models.Model):
+    name = models.CharField(max_length=80)
+    code = models.CharField(max_length=2)
+    def __str__(self):
+        return self.name
