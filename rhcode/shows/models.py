@@ -5,16 +5,12 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 # Create your models here.
 class Show(models.Model):
     date = models.DateField(default=date.today)
-    venue = models.CharField(max_length=40, default="")
-    city = models.CharField(max_length=40, default="")
-    state = models.CharField(max_length=40, default="")
-    country = models.ForeignKey('Country', on_delete=models.SET_NULL, blank=True, null=True)
+    venue = models.ForeignKey('Venue', on_delete=models.SET_NULL, blank=True, null=True)
     tour = models.ForeignKey('Tour', on_delete=models.SET_NULL, blank=True, null=True)
     sfm_setlist_id = models.CharField(max_length=15, default="00000000")
-    notes = models.CharField(max_length=250, default="")
-        
+    notes = models.CharField(max_length=250, default="")  
     def __str__(self):
-        retstr = str(self.date) + ' - ' + str(self.venue) + ', ' + str(self.city) + ', ' + str(self.country)
+        retstr = str(self.date) + ' - ' + str(self.venue)
         return retstr
 
 #Table of all performances of all songs, to link from songs to shows and add performance info per song
@@ -71,6 +67,24 @@ class Recording(models.Model):
 
 class RecordingType(models.Model):
     name = models.CharField(max_length=20)
+    def __str__(self):
+        return self.name
+
+class Venue(models.Model):
+    name = models.CharField(max_length=80)
+    city = models.ForeignKey('City', on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return self.name
+
+class City(models.Model):
+    name = models.CharField(max_length=80)
+    region = models.ForeignKey('Region', on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return self.name
+
+class Region(models.Model):
+    name = models.CharField(max_length=80)
+    country = models.ForeignKey('Country', on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return self.name
 
