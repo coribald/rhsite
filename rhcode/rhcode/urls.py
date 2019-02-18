@@ -21,6 +21,7 @@ from shows.views import ShowAutocomplete, TaperAutocomplete, MicAutocomplete
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
+    path('shows/', include('shows.urls')),
     path('fetch_shows/', fetch_shows),
     re_path(
         r'^show-autocomplete/$',

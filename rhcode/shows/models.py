@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from datetime import date
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -8,12 +9,15 @@ class Show(models.Model):
     venue = models.ForeignKey('Venue', on_delete=models.SET_NULL, blank=True, null=True)
     tour = models.ForeignKey('Tour', on_delete=models.SET_NULL, blank=True, null=True)
     sfm_setlist_id = models.CharField(max_length=15, default="00000000")
-    notes = models.CharField(max_length=250, default="")  
+    notes = models.CharField(max_length=250, default="")
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance of MyModelName."""
+        return reverse('show-detail', args=[str(self.id)])
     def __str__(self):
         retstr = str(self.date) + ' - ' + str(self.venue)
         return retstr
 
-#Table of all performances of all songs, to link from songs to shows and add performance info per song
+# Table of all performances of all songs, to link from songs to shows and add performance info per song
 class Performance(models.Model):
     song = models.ForeignKey('Song', on_delete=models.SET_NULL, null=True)
     show = models.ForeignKey('Show', on_delete=models.SET_NULL, null=True)
@@ -26,6 +30,9 @@ class Performance(models.Model):
         ]
     )
     notes = models.CharField(max_length=250, default="")
+    def __str__(self):
+        retstr = str(self.show.date) + " - " + self.song.name
+        return retstr
 
 class Tour(models.Model):
     name = models.CharField(max_length=30)
@@ -69,6 +76,9 @@ class Recording(models.Model):
     source2 = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='matrix_source2')
     source3 = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='matrix_source3')
     notes = models.CharField(max_length=500, default="")
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance of MyModelName."""
+        return reverse('recording-detail', args=[str(self.id)])
     def __str__(self):
         if str(self.recording_type) == "Audience":
             retstr = str(self.show) + " - " + str(self.mic) + " by " + str(self.taper)
