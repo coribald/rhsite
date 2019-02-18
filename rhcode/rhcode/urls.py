@@ -14,9 +14,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include,path
+from django.urls import include,path,re_path
+from shows.views import fetch_shows
+from shows.views import ShowAutocomplete,TaperAutocomplete,MicAutocomplete
+
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
+    path('fetch_shows/', fetch_shows),
+    re_path(
+        r'^show-autocomplete/$',
+        ShowAutocomplete.as_view(),
+        name='show-autocomplete',
+    ),
+    re_path(
+        r'^taper-autocomplete/$',
+        TaperAutocomplete.as_view(create_field='name'),
+        name='taper-autocomplete',
+    ),
+    re_path(
+        r'^mic-autocomplete/$',
+        MicAutocomplete.as_view(create_field='name'),
+        name='mic-autocomplete',
+    ),
     path('admin/', admin.site.urls),
 ]

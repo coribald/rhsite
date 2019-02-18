@@ -33,6 +33,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'shows.apps.ShowsConfig',
     'polls.apps.PollsConfig',
+    'rest_framework',
+    'dal',
+    'dal_select2',
+    'selectable',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
