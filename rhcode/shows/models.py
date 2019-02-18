@@ -76,7 +76,7 @@ class Recording(models.Model):
             retstr = str(self.show) + " - " + str(self.recording_type) + " by " + str(self.taper)
 
         else:
-            retstr = str(self.show) + ", " + str(self.recording_type) + " (" + str(self.mic) + ") by " + str(self.taper)
+            retstr = str(self.show) + " - " + str(self.recording_type) + " (" + str(self.mic) + ") by " + str(self.taper)
         return retstr
 
 class RecordingType(models.Model):
