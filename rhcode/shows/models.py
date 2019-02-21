@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from datetime import date
+from datetime import date, datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
@@ -14,7 +14,7 @@ class Show(models.Model):
         """Returns the url to access a particular instance of MyModelName."""
         return reverse('show-detail', args=[str(self.id)])
     def __str__(self):
-        retstr = str(self.date) + ' - ' + str(self.venue)
+        retstr = str(self.date.strftime('%Y-%m-%d')) + ' - ' + str(self.venue)
         return retstr
 
 # Table of all performances of all songs, to link from songs to shows and add performance info per song

@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import generic
+from django.core.paginator import Paginator
+
 
 from dal import autocomplete
 
@@ -18,14 +20,50 @@ def index(request):
         'num_recordings': num_recordings,
     }
     return render(request, 'index.html', context=context)
+
 class ShowListView(generic.ListView):
     model = Show
+    ordering = ['date']
 
 class ShowDetailView(generic.DetailView):
+
     model = Show
+    ordered_set = Show.objects.all().order_by('date')
+
+    def get_next(self):
+        return self.get_object().get_next_by_date()
+
+    def get_prev(self):
+        return self.get_object().get_previous_by_date()
+        
+
+    def set1(self):
+        s = Performance.objects.filter(show=self.get_object(), encore=0)
+        ordered_set = s.order_by('set_order')
+        return ordered_set
+
+    def set2(self):
+        s = Performance.objects.filter(show=self.get_object(), encore=1)
+        ordered_set = s.order_by('set_order')
+        return ordered_set
+    
+    def set3(self):
+        s = Performance.objects.filter(show=self.get_object(), encore=2)
+        ordered_set = s.order_by('set_order')
+        return ordered_set
+
+    def set4(self):
+        s = Performance.objects.filter(show=self.get_object(), encore=3)
+        ordered_set = s.order_by('set_order')
+        return ordered_set
+
+    def recordings(self):
+        return Recording.objects.filter(show=self.get_object())
+        
 
 class RecordingListView(generic.ListView):
     model = Recording
+    ordering = ['-show']
 
 class RecordingDetailView(generic.DetailView):
     model = Recording
