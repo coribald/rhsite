@@ -51,6 +51,9 @@ docs/_build/
 
 # Specific stuff
 shows/migrations/
+shows/media/
 polls/migrations/
 *.sqlite3
 *.swp
+*.jpg
+*.png

@@ -9,7 +9,8 @@ class Show(models.Model):
     venue = models.ForeignKey('Venue', on_delete=models.SET_NULL, blank=True, null=True)
     tour = models.ForeignKey('Tour', on_delete=models.SET_NULL, blank=True, null=True)
     sfm_setlist_id = models.CharField(max_length=15, default="00000000")
-    notes = models.CharField(max_length=250, default="")
+    notes = models.CharField(max_length=250, default="", null=True, blank=True)
+    art = models.ImageField(default='default.jpg')
     def get_absolute_url(self):
         """Returns the url to access a particular instance of MyModelName."""
         return reverse('show-detail', args=[str(self.id)])

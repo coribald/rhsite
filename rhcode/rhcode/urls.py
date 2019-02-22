@@ -15,13 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.conf import settings
+from django.conf.urls.static import static
 from shows.views import fetch_shows
 from shows.views import ShowAutocomplete, TaperAutocomplete, MicAutocomplete
 
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
-    path('shows/', include('shows.urls')),
+    path('', include('shows.urls')),
     path('fetch_shows/', fetch_shows),
     re_path(
         r'^show-autocomplete/$',
@@ -39,4 +41,4 @@ urlpatterns = [
         name='mic-autocomplete',
     ),
     path('admin/', admin.site.urls),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

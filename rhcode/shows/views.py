@@ -35,8 +35,12 @@ class ShowDetailView(generic.DetailView):
 
     def get_prev(self):
         return self.get_object().get_previous_by_date()
+    
+    def art_is_default(self):
+        if (self.get_object().art == "default.jpg"):
+            return False
+        return True
         
-
     def set1(self):
         s = Performance.objects.filter(show=self.get_object(), encore=0)
         ordered_set = s.order_by('set_order')
