@@ -1,0 +1,113 @@
+{% extends "generic.html" %}
+
+{% block content %}
+  <div class="container">
+    <ol class="breadcrumb" style="padding-top: 8px; padding-bottom: 8px;">
+      <li class="breadcrumb-item"><small><a href="{{ view.get_prev.get_absolute_url }}">{{ view.get_prev }}</a></small></li>
+      <li class="breadcrumb-item active"><small>{{ show }}</small></li>
+      <li class="breadcrumb-item"><small><a href="{{ view.get_next.get_absolute_url }}">{{ view.get_next }}</a></small></li>
+    </ol>
+    <div class="row">
+      <div class="col-md-12">
+          <div class="container">
+            {% if show.venue.city.region.country.code in "US" %} 
+            <h3>{{ show.date }} - {{ show.venue.city }}, {{ show.venue.city.region }} - {{ show.venue }}</h4>
+            {% elif show.venue.city.region.country.code in "GB"  %}
+            <h3>{{ show.date }} - {{ show.venue.city }}, {{ show.venue.city.region }}, {{ show.venue.city.region.country }} - {{ show.venue }}</h4>
+            {% else %}
+            <h3>{{ show.date }} - {{ show.venue.city }}, {{ show.venue.city.region.country }} - {{ show.venue }}</h4>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+              {% if show.notes %} 
+              <p class="lead">{{ show.notes }}</p>
+              {% else %}
+              <br>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    <div class="row">
+      
+        <div class="col-md-4">
+            {% if view.art_is_default %}
+            <div class="card bg-light mb-3">
+                <img class="card-img" src="{{ MEDIA_URL }}{{ show.art }}" />
+            </div>{% endif %}
+            <div class="card bg-light mb-3">
+                <div class="card-body p-0">
+                  <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                      <tbody>
+                        <tr>
+                          <th scope="row">Date:</th>
+                          <td><a href="#">{{ show.date}}</a></td>
+                        </tr>
+                        <tr class="table-light">
+                          <th scope="row">Venue:</th>
+                          <td><a href="#">{{ show.venue }}</a></td>
+                        </tr>
+                        <tr >
+                          <th scope="row">City:</th>
+                          <td><a href="#">{{ show.venue.city }}</a></td>
+                        </tr>
+                        <tr class="table-light">
+                          <th scope="row">State/Region:</th>
+                          <td><a href="#">{{ show.venue.city.region }}</a></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">Country:</th>
+                          <td><a href="#">{{ show.venue.city.region.country }}</a></td>
+                        </tr>
+                        <tr class="table-light">
+                          <th scope="row">Tour:</th>
+                          <td><a href="#">{{ show.tour }}</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          <div class="card text-white bg-primary mb-3" style="max-width: 600rem;">
+            <div class="card-body" style="padding-bottom: 5px; padding-top: 15px">
+              <h6 class="card-title">Known recordings</h6>
+            </div>
+            <ul class="list-group list-group-flush">
+              {% for recording in view.recordings %}
+              <li class="list-group-item">
+                <p><span class="badge badge-pill badge-primary pb-2 align-middle">{{ recording.recording_type }} </span>&nbsp;&nbsp;<a class="card-link" href="{{ recording.get_absolute_url }}">{{ recording.mic }} by {{ recording.taper }}</p></a>
+                <audio controls style="width: 90%">
+                  <source src="myAudio.mp3" type="audio/mp3">
+                </audio>
+              </li>{% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card border-secondary mb-3" style="max-width: 800rem;">
+                <div class="card-header">Setlist</div>
+                <div class="card-body">
+                    {% for performance in view.set1 %}
+                    <p class="small">{{ performance.set_order }}. <a href="#">{{ performance.song.name }}</a>{% if performance.notes %} (<i>{{ performance.notes }}</i>){% endif %}</p>{% endfor %}
+                    {% if view.set2 %}
+                      <p class="small"><b>Encore 1:</b></p>
+                      {% for performance in view.set2 %}
+                      <p class="small">{{ performance.set_order }}. <a href="#">{{ performance.song.name }}</a>{% if performance.notes %} (<i>{{ performance.notes }}</i>){% endif %}</p>{% endfor %}{% endif %}
+                    {% if view.set3 %}
+                      <p class="small"><b>Encore 2:</b></p>
+                      {% for performance in view.set3 %}
+                      <p class="small">{{ performance.set_order }}. <a href="#">{{ performance.song.name }}</a>{% if performance.notes %} (<i>{{ performance.notes }}</i>){% endif %}</p>{% endfor %}{% endif %}
+                    {% if view.set4 %}
+                      <p class="small"><b>Encore 3</b></p>
+                      {% for performance in view.set3 %}
+                      <p class="small">{{ performance.set_order }}. <a href="#">{{ performance.song.name }}</a>{% if performance.notes %} (<i>{{ performance.notes }}</i>){% endif %}</p>{% endfor %}{% endif %}
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+{% endblock %}

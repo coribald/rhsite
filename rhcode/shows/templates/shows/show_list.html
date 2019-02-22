@@ -1,0 +1,16 @@
+{% extends "generic.html" %}
+
+{% block content %}
+    <h2>Show List</h2>
+    {% if show_list %}
+    <ul>
+        {% for show in show_list %}
+            <li>
+                <a href="{{ show.get_absolute_url }}">{{ show.date }} at {{ show.venue }} - {{ show.venue.city }}, {{ show.venue.city.region }}, {{ show.venue.city.region.country.code }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No shows found.</p>
+    {% endif %}
+{% endblock %}

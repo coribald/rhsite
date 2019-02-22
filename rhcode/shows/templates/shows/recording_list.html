@@ -1,0 +1,16 @@
+{% extends "generic.html" %}
+
+{% block content %}
+    <h2>Recording List</h2>
+    {% if recording_list %}
+    <ul>
+        {% for Recording in recording_list %}
+            <li>
+                <a href="{{ Recording.get_absolute_url }}">{{ Recording.show.date }} - {{ Recording.recording_type }} by {{ Recording.taper.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No recordings found.</p>
+    {% endif %}
+{% endblock %}

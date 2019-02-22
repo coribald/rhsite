@@ -1,0 +1,10 @@
+{% extends "generic.html" %}
+
+{% block content %}
+  <h2>{{ recording.show.date }} - {{ recording.recording_type }} by {{ recording.taper }}</h2>
+  <p><strong>Date:</strong> <a href="{% url 'show-detail' recording.show.pk %}"> {{ recording.show.date }}</a></p> <!-- Show detail link not yet defined -->
+  <p><strong>Location:</strong><a href=""> {{ recording.show.venue }} - {{ recording.show.venue.city }}, {{ recording.show.venue.city.region }}, {{ recording.show.venue.city.region.country.code }}</a></p>
+  <p><strong>Taper:</strong><a href=""> {{ recording.taper }}</a></p>
+  <p><strong>Equipment:</strong> {{ recording.mic }}</p>
+  <p><strong>Notes: </strong>{{ recording.notes }}</p> 
+{% endblock %}

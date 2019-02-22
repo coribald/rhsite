@@ -1,0 +1,14 @@
+{% extends "generic.html" %}
+
+{% block content %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>Hey man, slow down!</strong> This website is very under construction.
+</div>
+  <h2>Shows Home</h2>
+  <p>Welcome to Fake Plastic Tapes, a site by <em>coribald</em>!</p>
+  <ul>
+      <li><strong><a href="{% url 'shows' %}">Shows</strong></a> {{ num_shows }}</li>
+      <li><strong><a href="{% url 'recordings' %}">Recordings</strong></a> {{ num_recordings }}</li>
+  </ul>
+{% endblock %}
