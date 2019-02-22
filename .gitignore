@@ -50,9 +50,9 @@ coverage.xml
 docs/_build/
 
 # Specific stuff
-shows/migrations/
-shows/media/
-polls/migrations/
+rhcode/shows/migrations/
+rhcode/shows/media/
+rhcode/polls/migrations/
 *.sqlite3
 *.swp
 *.jpg
